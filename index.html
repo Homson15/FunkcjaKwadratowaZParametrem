@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		
+		<meta charset="utf-8" />
+		<title> Funkcja Kwadratowa </title>
+		<meta http-equiv="X-UA-Compatible=" content="IE=edge chrome=1" />
+		
+		<style>
+			
+			body{
+				margin-top: 0px;
+				margin-left: 0px;
+				margin-right: 0px;
+				background-image: url("kosmos.jpg")
+			}
+			
+			#top{
+				//background-image: url("whitebg.png");
+				background-color: white;
+			}
+			
+			#container{
+				
+				margin-left: auto;
+				margin-rigth: auto;
+				
+			}
+			
+			#helper{
+				
+				padding: 10px;
+				
+			}
+			
+			#center{
+				
+				margin: auto;
+				//background-image: url("graybg.jpg");
+				background-color: lightgray;
+				
+				border: 7px solid lightgray;
+				border-radius: 25px;
+				
+				text-align: center;
+				
+				width:520px;
+				//height:500px;
+				
+			}
+			
+			#can{
+				margin: auto;
+				background-color: white;
+				
+				border: 10px solid white;
+				border-radius: 25px;
+				
+				width: 500px;
+				height: 500px;
+			}
+			
+			#przedPoz{
+				
+			}
+			
+			.checkboxbox{
+				
+				float: left;
+				width: 33%;
+				text-align:center;
+			}
+			
+		</style>
+		<script>
+			
+			function licz(){
+				
+				var a = document.getElementById('a').value;
+				var b = document.getElementById('b').value;
+				var c = document.getElementById('c').value;
+				var slide = document.getElementById("suwak");
+				var m = slide.value;
+				
+				a = parseFloat(a);
+				b = parseFloat(b);
+				c = parseFloat(c);
+				m = parseFloat(m);
+				
+				var checkboxA = document.getElementById('checkboxA');
+				var checkboxB = document.getElementById('checkboxB');
+				var checkboxC = document.getElementById('checkboxC');
+				
+				if(checkboxA.checked==true){
+					
+					a = a + m;
+					
+				}
+				if(checkboxB.checked==true){
+					
+					b = b + m;
+					
+				}
+				if(checkboxC.checked==true){
+					
+					c = c + m;
+					
+				}
+				
+				var delta = Math.pow(b,2) - 4 * a * c;
+				
+				if(delta>0){
+					
+					var x1 = (-b + Math.sqrt(delta)) / (2*a);
+					var x2 = (-b - Math.sqrt(delta)) / (2*a);
+					
+					var p = (x1 + x2) /2;
+					
+					var q = a*(p*p) + b*p + c;
+					var oy = c;
+					
+					alert("Delta = " + delta + "\nx1= " + x1 + "\nx2= " + x2 + "\nWierzchołek: (" + p + "," + q + ")\nOy= " + oy);
+					
+				} else if(delta==0){
+					
+					var x1 = -b/(2*a);
+					var x2 = "-"
+					
+					var p = x1;
+					var q = a*Math.pow(p,2) + b*p + c;
+					
+					var oy = c;
+					
+					
+					alert("Delta = " + delta + "\nx1= " + x1 + "\nx2= " + x2 + "\nWieszchołek: (" + p + "," + q + ")\nOy= " + oy);
+					
+				}else{
+					
+					var x1 = "-"
+					var x2 = "-"
+					
+					var p = -b/2*a;
+					var q = -delta/4*a;
+					
+					var oy = c;
+					
+					alert("Delta = " + delta + "\nx1= " + x1 + "\nx2= " + x2 + "\nWieszchołek: (" + p + "," + q + ")\nOy= " + oy);
+				}
+			}
+			
+			function wyczysc(){
+			
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+				
+				ctx.clearRect(0,0,500,500);
+				
+			    ctx.beginPath();
+				
+				
+				
+				ctx.moveTo(0, 250);
+				ctx.lineTo(500, 250);
+				
+				ctx.moveTo(250, 0);
+				ctx.lineTo(250, 500);
+
+			    ctx.stroke();
+				
+				if(osY.checked==true) rysujY();
+				if(osX.checked==true) rysujX();
+				if(krata.checked==true) rysujKrata();
+				
+				
+			}
+			
+			function rysuj(){
+				
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+				
+				wyczysc();
+				
+				var slide = document.getElementById("suwak");
+				
+				var a = document.getElementById('a').value;
+				var b = document.getElementById('b').value;
+				var c = document.getElementById('c').value;
+				var m = slide.value;
+				m = parseFloat(m);
+				a = parseFloat(a);
+				b = parseFloat(b);
+				c = parseFloat(c);
+				
+				if(checkboxA.checked==true){
+					
+					a = a + m;
+					
+				}
+				if(checkboxB.checked==true){
+					
+					b = b + m;
+					
+				}
+				if(checkboxC.checked==true){
+					
+					c = c + m;
+					
+				}
+				
+				//alert(a + " " + b + " " + c + " " + m);
+				
+				var sy = document.getElementById('sy').value;
+				var sx = document.getElementById('sx').value;
+				sy = parseFloat(sy);
+				sx = parseFloat(sx);
+				
+				var min = -250*sx;
+				var max = 250*sx;
+				
+				ctx.beginPath();
+				
+				for(let i=min; i<max; i+=0.1){
+					
+					ctx.moveTo(250+i/sx, 		250-(a*Math.pow(i,2)	+	b*i	 	+ c)/sy);
+					ctx.lineTo(250+(i+0.1)/sx, 	250-(a*Math.pow(i+0.1,2)	+ 	b*(i+0.1) + c)/sy);
+					
+				}
+				
+				ctx.stroke();
+			}
+			
+			function rysujPodstawa(){
+				
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+				
+				wyczysc();
+				
+				var a = document.getElementById('a').value;
+				var b = document.getElementById('b').value;
+				var c = document.getElementById('c').value;
+				var m = slide.value;
+				c = parseFloat(c);
+				
+				var sy = document.getElementById('sy').value;
+				var sx = document.getElementById('sx').value;
+				sy = parseFloat(sy);
+				sx = parseFloat(sx);
+				
+				var min = -250*sx;
+				var max = 250*sx;
+				
+				ctx.beginPath();
+				
+				for(let i=min; i<max; i++){
+					
+					ctx.moveTo(250+i/sx, 		250-Math.pow(i,2)/sy);
+					ctx.lineTo(250+(i+1)/sx, 	250-Math.pow(i+1,2)/sy);
+					
+				}
+				
+				ctx.stroke();
+			}
+			
+			function rysujY(){
+				
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+				
+				var sy = document.getElementById('sy').value;
+				sy = parseFloat(sy);
+				
+				var min = -250*sy;
+				var max = 250*sy;
+				
+				var skala = 20*sy; 
+				
+				for(var i=min; i<max; i++){
+					
+					
+					if(i%skala==0){
+						
+						ctx.fillText(i, 260, 250-i/sy);
+						
+					}
+					
+				}
+				
+				if(osY.checked==false) wyczysc();
+			}
+			
+			function rysujX(){
+			
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+			
+				var sx = document.getElementById('sx').value;
+				sx = parseFloat(sx);
+				
+				var min = -250*sx;
+				var max = 250*sx;
+				
+				var skala = 20*sx; 
+			
+				for(var i=min; i<max; i++){
+					
+					if(i%skala==0)	ctx.fillText(-i, 250-i/sx, 260);
+					
+				}
+				
+				if(osX.checked==false) wyczysc();
+			}
+			
+			function rysujKrata(){
+			
+				const canvasElem = document.getElementById('MyCanvas');
+				const ctx = canvasElem.getContext('2d');
+				
+				ctx.beginPath();
+				
+				for(var i=-250; i<250; i++){
+					
+					if(i%20==0){
+						
+						ctx.moveTo(0,250-i);
+						ctx.lineTo(500,250-i)
+						
+					}
+				}
+				
+				for(var i=-250; i<250; i++){
+					
+					if(i%20==0){
+						
+						ctx.moveTo(250+i,0);
+						ctx.lineTo(250+i,500);
+						
+					}
+				}
+				
+				if(krata.checked==false) wyczysc();
+				
+				ctx.stroke();
+				
+			}
+			
+		</script>
+	</head>
+	<body onload="wyczysc()">
+		
+		<div id="top">
+		
+			<span>Wprowadź m: </span><span id="m"></span>
+			<center><input type="range" min="-100" max="100" size="500" style="width:99%;" value="0" class="slider-square" id="suwak"></center>
+		
+		</div>
+			<script>
+				var slide = document.getElementById("suwak");
+				var y = document.getElementById("m");
+				y.innerHTML = slide.value;
+
+				slide.oninput = function() {
+					y.innerHTML = this.value;
+					wyczysc();
+					rysuj();
+				}
+			</script>
+		
+		<div id="container">
+			
+			<div id="helper">
+			
+				<div id="center">
+					
+					<input type="checkbox" id="checkboxA" onclick="spanA()">
+					<input type="checkbox" id="checkboxB" onclick="spanB()">
+					<input type="checkbox" id="checkboxC" onclick="spanC()">
+					
+					<br />
+					
+					<span id="spanA1" style="display:none">(m+</span><input id="a" value=0 size=3><span id="spanA2" style="display:none">)</span>
+					<span>x*x+</span>
+					<span id="spanB1" style="display:none">(m+</span><input id="b" value=0 size=3><span id="spanB2" style="display:none">)</span>
+					<span>x*+</span>
+					<span id="spanC1" style="display:none">(m+</span><input id="c" value=0 size=3><span id="spanC2" style="display:none">)</span>
+					
+					<script>
+						
+						function spanA(){
+						
+							var checkbox = document.getElementById('checkboxA');
+					
+							var spanA1 = document.getElementById('spanA1');
+							var spanA2 = document.getElementById('spanA2');
+							
+							if(checkbox.checked==true){
+							
+								spanA1.style.display = "inline";
+								spanA2.style.display = "inline";
+								
+							}else{
+							
+								spanA1.style.display = "none";
+								spanA2.style.display = "none";
+								
+							}
+							
+							rysuj();
+						}
+						function spanB(){
+						
+							var checkbox = document.getElementById('checkboxB');
+							
+							var spanB1 = document.getElementById('spanB1');
+							var spanB2 = document.getElementById('spanB2');
+							
+							if(checkbox.checked==true){
+								
+								spanB1.style.display = "inline";
+								spanB2.style.display = "inline";
+								
+							}else{
+								
+								spanB1.style.display = "none";
+								spanB2.style.display = "none";
+								
+							}
+							
+							rysuj();
+						}
+						function spanC(){
+						
+							var checkbox = document.getElementById('checkboxC');
+								
+							var spanC1 = document.getElementById('spanC1');
+							var spanC2 = document.getElementById('spanC2');
+							
+							if(checkbox.checked==true){
+								
+								spanC1.style.display = "inline";
+								spanC2.style.display = "inline";
+								
+							}else{
+								
+								spanC1.style.display = "none";
+								spanC2.style.display = "none";
+								
+							}
+							rysuj();
+						}
+					</script>
+					
+					<br />
+					
+					<span>Wprowadź skalę osi y:</span><input id="sy" value=0.5 size=1>
+					
+					<br />
+					
+					<span>Wprowadź skalę osi x:</span><input id="sx" value=0.5 size=1>
+					
+					<br />
+					
+					<input type="button" value="Licz" onclick="licz()">
+					<input type="button" value="Wyczysc" onclick="wyczysc()">
+					<input type="button" value="Rysuj" onclick="rysuj()">
+					
+					<input type="button" value="Rysuj Kwadratowa" onclick="rysujPodstawa()">
+					
+					<br />
+					
+					<span>Parametry osi Y:</span>
+					<input type="checkbox" id="osY" onclick="rysujY()">
+					
+					<span>Paramerty osi X:</span>
+					<input type="checkbox" id="osX" onclick="rysujX()">
+					
+					<span>Kratki:</span>
+					<input type="checkbox" id="krata" onclick="rysujKrata()">
+					
+						<div id="can">
+							
+							<canvas width="500" height="500" id="MyCanvas" />
+							
+						</div>
+					
+					<div id="przedPoz"> </div>
+					
+				</div>
+			
+			</div>
+			
+		</div>
+		
+	</body>
+</html>
